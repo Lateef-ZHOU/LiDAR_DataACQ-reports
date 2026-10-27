@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="2026-10-21至10-27采集软件周报：整体代码审查与模块分仓、带界面的Docker与Linux移植、激光器协议层及后续ARM桥接计划。"><title>采集软件周报 2026-10-27</title><style>
+:root {
+  --bg: #f0f3f1; --paper: #fff; --ink: #1d292c; --muted: #647276;
+  --line: #d9e1df; --accent: #0f6f7c; --soft: #eaf4f4;
+  --sans: "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif;
+  --serif: "Noto Serif SC", "Source Han Serif SC", "SimSun", serif;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.8 var(--sans); }
+.toolbar { max-width: 210mm; margin: 20px auto 12px; display: flex; justify-content: space-between; align-items: center; padding: 0 4px; color: var(--muted); font-size: 12px; }
+.toolbar a { color: var(--accent); text-underline-offset: 4px; }
+.toolbar button { border: 1px solid var(--line); border-radius: 5px; background: white; color: var(--ink); padding: 7px 13px; font: inherit; cursor: pointer; }
+.page { width: 210mm; height: 297mm; margin: 0 auto 24px; padding: 14mm 16mm 12mm; background: var(--paper); display: flex; flex-direction: column; box-shadow: 0 4px 24px #1d292c0c; }
+.page-content { flex: 1; min-height: 0; }
+.eyebrow { display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; letter-spacing: .08em; border-top: 3px solid var(--accent); padding-top: 12px; }
+h1 { font-family: var(--serif); font-size: 31px; line-height: 1.45; margin: 19px 0 12px; font-weight: 700; }
+h2 { font-family: var(--serif); font-size: 25px; line-height: 1.4; margin: 28px 0 13px; }
+h3 { font-size: 16px; line-height: 1.5; margin: 0 0 7px; }
+p { margin: 0 0 12px; }
+.lede { color: var(--muted); font-size: 14px; }
+.page-one h2 { margin-top: 0; font-size: 23px; }
+.page-one header { border-bottom: 1px solid var(--line); padding-bottom: 10px; margin-bottom: 22px; }
+.features { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; margin: 13px 0 19px; }
+.features p { font-size: 13px; margin: 0; line-height: 1.75; }
+.features strong { display: block; font-size: 14px; margin-bottom: 2px; }
+figure { margin: 0; }
+.shot { border: 1px solid var(--line); border-radius: 5px; padding: 5px; background: #f7f9f8; }
+.shot img { width: 100%; height: auto; display: block; border-radius: 3px; }
+figcaption { color: var(--muted); font-size: 11px; line-height: 1.7; margin-top: 8px; text-align: left; }
+.foot { display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 10px; margin-top: 18px; font-size: 10px; letter-spacing: .04em; color: var(--muted); flex-shrink: 0; }
+.section-lead { color: var(--muted); font-size: 14px; margin-bottom: 22px; }
+.note { background: var(--soft); border-left: 3px solid var(--accent); padding: 14px 17px; margin: 15px 0 22px; }
+.note h3 { color: var(--accent); font-size: 14px; }
+.note p { font-size: 13px; margin: 0; }
+.plain-list { padding-left: 1.2em; margin: 0; }
+.plain-list li { padding-left: 3px; margin: 9px 0; font-size: 14px; }
+.compact li { margin: 10px 0; font-size: 14.5px; }
+.verification { font-size: 14px; border-top: 1px solid var(--line); padding-top: 16px; margin-top: 22px; }
+.verification strong { color: var(--accent); }
+.architecture h2 { font-size: 23px; margin: 25px 0 12px; }
+.architecture .section-lead { margin-bottom: 16px; }
+.architecture .next { margin-top: 22px; }
+@media (max-width: 820px) {
+  .toolbar { margin: 12px 15px; }
+  .page { width: calc(100% - 24px); height: auto; min-height: 0; padding: 25px 22px; margin: 0 12px 18px; }
+  h1 { font-size: 27px; } h2 { font-size: 23px; }
+  .foot { margin-top: 30px; }
+}
+@media (max-width: 500px) {
+  .eyebrow { display: block; } .eyebrow time { display: block; margin-top: 3px; }
+  .features { grid-template-columns: 1fr; gap: 10px; }
+}
+@page { size: A4 portrait; margin: 0; }
+@media print {
+  html, body { background: white; margin: 0; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .toolbar { display: none; }
+  .page { width: 210mm; height: 297mm; margin: 0; padding: 14mm 16mm 12mm; box-shadow: none; break-after: page; break-inside: avoid; }
+  .page:last-child { break-after: auto; }
+  h1 { font-size: 31px; } h2 { font-size: 25px; }
+  .features { grid-template-columns: 1fr 1fr; gap: 12px 24px; }
+  .eyebrow { display: flex; } .eyebrow time { display: inline; margin: 0; }
+  .foot { margin-top: 18px; }
+}
+
+.module-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:18px 0; }
+.module { border:1px solid var(--line); border-radius:5px; padding:12px 14px; }
+.module strong { color:var(--accent); font-size:14px; }
+.module p { font-size:13px; margin:3px 0 0; }
+.flow { text-align:center; background:var(--soft); padding:13px; margin:15px 0; font-size:14px; }
+.progress { font-size:12px; color:var(--accent); margin-bottom:8px; }
+@media (max-width:500px) { .module-grid {grid-template-columns:1fr;} }
+@media print { .module-grid {grid-template-columns:1fr 1fr;} }
+</style></head><body><nav class="toolbar" aria-label="周报工具"><span>采集软件周报 · 2 页</span><span><a href="weekly-2026-10-20.html">上期周报</a>　<button type="button" onclick="window.print()">打印 / 保存为 PDF</button></span></nav>
+<main>
+<article class="page page-one">
+<div class="page-content">
+<header>
+<div class="eyebrow"><span>LiDAR_DataACQ · 采集软件周报</span><time datetime="2026-10-27">2026-10-21 — 10-27</time></div>
+<h1>完成整体代码审查与模块拆分<br>推进跨平台交付及外围设备接入</h1>
+<p class="lede">本周完成一次全量代码审查，将公共能力与具体设备、任务分开维护；完成带界面的 Docker 仿真版及 Linux 移植验证，并开始接入激光器。</p>
+</header>
+<h2>一、统一公共模块，设备与任务独立扩展</h2>
+<p>围绕软件整体开展代码审查，清理重复保存的数据、多余接口和跨层依赖，梳理线程关闭与资源释放顺序。在此基础上，将软件拆分为独立仓库，形成设备和任务可以按需组合使用的公共模块。</p>
+<div class="module-grid">
+<div class="module"><strong>HandleCore · 通信连接</strong><p>统一串口、网络等收发机制，复用断线重连和关闭流程。</p></div>
+<div class="module"><strong>DeviceCore · 设备基础</strong><p>提供设备运行、数据收集与访问管理的共同规则。</p></div>
+<div class="module"><strong>TaskCore · 任务基础</strong><p>提供任务编排机制，统一不同类别设备的标准能力。</p></div>
+<div class="module"><strong>UICore · 公共界面</strong><p>统一输入控件、收缩栏及设备和任务页面的布局。</p></div>
+<div class="module"><strong>ChartCore · 绘图显示</strong><p>提供共享的二维图表和三维功率谱显示。</p></div>
+<div class="module"><strong>Algorithm · 算法计算</strong><p>集中维护坐标换算、风场及功率谱等计算能力。</p></div>
+</div>
+<div class="flow">公共模块按需组合 → 具体设备与任务 → 主程序统一装配</div>
+<p>每种设备和每类任务分别维护自身协议、业务及页面，主程序负责组合与展示。后续接入激光器、温控等设备，可以复用既有通信和界面能力，减少对已有采集功能的修改。</p>
+<div class="note"><h3>为 Windows 与 ARM Linux 共用代码建立基础</h3><p>通信模块不再绑定某一端的界面。同一设备的协议实现可以供桌面程序和 Linux 端复用，避免两端分别维护相同的收发逻辑。</p></div>
+</div>
+<footer class="foot"><span>激光测风雷达采集软件 · 本周进展</span><span>01 / 02</span></footer>
+</article>
+<article class="page architecture">
+<div class="page-content">
+<div class="eyebrow"><span>LiDAR_DataACQ · 跨平台交付与设备接入</span><time datetime="2026-10-27">2026-10-27</time></div>
+<h2>二、完成带界面的 Docker 仿真交付</h2>
+<p>完成仿真版本的 Linux 移植与运行验证，并打包为可在 Linux 桌面环境中运行的 Docker 镜像。通过命令行指定单轴、环形四轴或蛇形四轴任务，设备就绪后自动开始采集，同时显示界面、实时绘图并保存数据。</p>
+<ul class="plain-list">
+<li>设备参数通过 JSON 配置，任务参数通过命令行给出；默认风场采用线性剪切与随机起伏。</li>
+<li>验证三种任务的采样、落盘及停止退出，完成 Windows 回归和 Linux 桌面显示检查。</li>
+<li>已整理镜像、示例配置、启动脚本和部署说明，形成可直接转交测试的离线交付包。</li>
+</ul>
+<div class="note"><h3>交付范围</h3><p>当前为仿真设备版本，面向 x86_64 Linux 桌面与 Docker 环境。界面显示及三种采集任务已验证；ARM 外围设备桥接属于后续工作。</p></div>
+<h2>三、完成激光器通信协议层</h2>
+<p>依据镭晟激光器协议，实现指令报文封装、CRC16 校验和不定长数据解帧。接收过程能够处理分段到达、连续多帧，以及错误报文后的重新识别，复用已有串口连接机制。</p>
+<p>已通过 Windows、Linux 构建及 505 项测试断言，覆盖协议示例和主要异常报文场景。目前完成的是通信协议层；设备实机联调、控制页面和状态显示仍在推进。</p>
+<div class="verification"><strong>本周阶段成果：</strong>公共模块与设备、任务分仓完成；带界面的 Linux/Docker 仿真版已交付；激光器协议层已具备后续业务接入基础。</div>
+<h2 class="next">下一步计划</h2>
+<ul class="plain-list compact">
+<li><strong>完善外围设备页面：</strong>完成激光器的界面控制、状态与报警显示，并开展温控设备接入。</li>
+<li><strong>实现 ARM 端桥接器（Bridge）：</strong>基于 HandleCore 接入外围设备，建立各 Handle 设备之间的协议转发通道，使 Linux 端设备数据与 Windows 端界面连通。</li>
+</ul>
+</div>
+<footer class="foot"><span>激光测风雷达采集软件 · 本周进展</span><span>02 / 02</span></footer>
+</article>
+</main>
+</body></html>
