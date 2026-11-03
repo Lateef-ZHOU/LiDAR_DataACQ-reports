@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="采集软件周报：激光器与DMA采集卡接入、ARM设备桥接，以及温控和采集卡规范化计划。">
+<title>采集软件周报 2026-11-03</title>
+<style>
+:root{--bg:#edf1f0;--ink:#203337;--muted:#687a7d;--accent:#087783;--soft:#edf6f6;--line:#d3e1e1;--sans:"Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif;--serif:"Noto Serif SC","Source Han Serif SC","SimSun",serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--sans)}
+.toolbar{width:min(1440px,calc(100% - 40px));height:60px;margin:auto;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}.toolbar a{color:var(--accent)}.toolbar button{border:1px solid var(--line);background:#fff;border-radius:4px;padding:7px 12px;font:inherit;cursor:pointer}
+.slide{width:min(calc(100vw - 40px),calc((100dvh - 88px)*16/9),1920px);margin:0 auto 28px;container-type:inline-size}
+.page{width:100%;height:56.25cqw;padding:2.5cqw 3.35cqw 1.8cqw;background:#fff;display:flex;flex-direction:column;box-shadow:0 4px 24px #2033370b;font-size:1.3cqw}
+.page-content{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr;gap:2.25cqw 3cqw}.page-content>header{grid-column:1/-1}.page-content>section{min-width:0}
+.eyebrow{display:flex;justify-content:space-between;border-top:.2cqw solid var(--accent);padding-top:.7cqw;font-size:.88cqw;letter-spacing:.04em;color:var(--muted)}
+h1{font:700 2.7cqw/1.3 var(--serif);margin:.9cqw 0 .55cqw}h2{font:700 1.8cqw/1.4 var(--serif);margin:0}h3{font-size:1.4cqw;line-height:1.5;margin:0 0 .55cqw}p{margin:0}.intro{font-size:1.3cqw;color:var(--muted)}
+.section-head{display:flex;align-items:flex-start;flex-direction:column;gap:.5cqw;margin-bottom:.6cqw}.num{font:500 1.1cqw var(--sans);color:var(--accent);margin-right:.8cqw}.verified{font-size:1.05cqw;color:var(--accent);white-space:nowrap}.verified::before{content:"✓";margin-right:.4cqw;font-weight:700}
+.diagram{display:block;width:100%;height:auto;overflow:visible}.diagram text{font-family:var(--sans);fill:var(--ink)}.diagram .label{font-size:20px;font-weight:600}.diagram .small{font-size:16px;fill:var(--muted)}.diagram .box{fill:#fff;stroke:var(--line);stroke-width:1.5}.diagram .tint{fill:var(--soft);stroke:#accfd2;stroke-width:1.5}.diagram .wire{fill:none;stroke:var(--accent);stroke-width:2}.diagram .light-wire{fill:none;stroke:#a7c3c6;stroke-width:1.5}
+.detail-pair{display:grid;grid-template-columns:1fr 1fr;gap:1.6cqw;margin-top:.9cqw}.detail-pair strong{font-size:1.2cqw;color:var(--accent)}.detail-pair p{font-size:1.2cqw;margin-top:.3cqw}
+.adaptation{margin-top:1.4cqw;padding:.85cqw 1cqw;background:var(--soft);font-size:1.15cqw;line-height:1.75}.adaptation strong{color:var(--accent)}
+.divider,.next-panel{border-left:1px solid var(--line);padding-left:2.6cqw}.route{font-size:1.05cqw;color:var(--muted);margin:.9cqw 0 1.2cqw}.brief{font-size:1.2cqw;margin-top:1.1cqw}.brief strong{color:var(--accent)}
+.foot{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:.65cqw;margin-top:1.1cqw;font-size:.85cqw;color:var(--muted);flex-shrink:0}
+.bridge-figure{margin:1.5cqw 0 1cqw}.service-strip{display:grid;gap:.7cqw;border-top:1px solid var(--line);padding-top:1.4cqw;font-size:1.2cqw;color:var(--accent)}
+.next-title{margin:0 0 1.4cqw}.plan{margin:0 0 1.8cqw}.plan-head{display:flex;align-items:baseline;gap:.8cqw}.progress{font-size:1.05cqw;color:var(--accent)}.steps{display:flex;align-items:center;gap:1cqw;margin:.6cqw 0 0}.step{flex:1;border-bottom:.2cqw solid var(--line);padding:.5cqw 0 .8cqw;font-size:1.15cqw}.step.active{border-color:var(--accent)}.step small{display:block;font-size:1cqw;color:var(--muted);margin-top:.3cqw}.step-arrow{font-size:1.7cqw;color:var(--accent)}.plan-note{font-size:1.05cqw;color:var(--muted);text-align:center;margin-top:.5cqw}
+@page{size:15in 8.4375in;margin:0}
+@media print{html,body{margin:0;padding:0;background:white;-webkit-print-color-adjust:exact;print-color-adjust:exact}.toolbar{display:none}.slide{width:15in;margin:0;break-after:page;break-inside:avoid}.slide:last-child{break-after:auto}.page{box-shadow:none}}
+</style>
+</head>
+<body>
+<nav class="toolbar" aria-label="周报工具"><span>采集软件周报 · 16:9 横屏 · 2 页</span><span><a href="weekly-2026-10-27.html">上期周报</a>　<button type="button" onclick="window.print()">打印 / 保存为 PDF</button></span></nav>
+<main>
+<div class="slide">
+<article class="page" aria-labelledby="report-title"><div class="page-content">
+<header>
+<div class="eyebrow"><span>LiDAR_DataACQ · 本周进展</span><time datetime="2026-11-03">2026-10-28 — 11-03</time></div>
+<h1 id="report-title">设备接入与链路联调</h1>
+<p class="intro">完成激光器控制与实测，打通 DMA 采集卡至上位机的数据链路。</p>
+</header>
+<section class="section">
+<div class="section-head"><h2><span class="num">01</span>激光器：串口、网口双接入</h2><span class="verified">通信与功能测试通过</span></div>
+<svg class="diagram" viewBox="0 0 670 180" role="img" aria-label="激光器可串口直连Windows上位机，也可经ARM桥接器通过UDP网口连接。">
+<defs><marker id="arr1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse"><path d="M0 0L6 3L0 6Z" fill="#087783"/></marker></defs>
+<rect class="box" x="1" y="44" width="143" height="100" rx="7"/><text class="label" x="72" y="88" text-anchor="middle">镭晟激光器</text><text class="small" x="72" y="113" text-anchor="middle">串口设备</text>
+<path class="wire" d="M151 64H518" marker-start="url(#arr1)" marker-end="url(#arr1)"/><text class="small" x="335" y="46" text-anchor="middle">串口直连</text>
+<path class="wire" d="M151 122H224" marker-start="url(#arr1)" marker-end="url(#arr1)"/><path class="wire" d="M438 122H518" marker-start="url(#arr1)" marker-end="url(#arr1)"/>
+<rect class="tint" x="230" y="92" width="202" height="60" rx="7"/><text class="label" x="331" y="128" text-anchor="middle">ARM 板卡桥接</text><text class="small" x="478" y="106" text-anchor="middle">UDP</text>
+<rect class="box" x="526" y="44" width="143" height="100" rx="7"/><text class="label" x="597" y="88" text-anchor="middle">Windows</text><text class="small" x="597" y="113" text-anchor="middle">同一控制界面</text>
+</svg>
+<div class="detail-pair">
+<div><strong>控制</strong><p>出光／关光、功率与脉宽设置；<br>内外控切换。</p></div>
+<div><strong>监测</strong><p>显示设备回报状态；<br>绘制温度、电流、电压曲线。</p></div>
+</div>
+<div class="adaptation"><strong>按实机调整：</strong>脉宽由设备查询；频率限定 5／8／10 kHz；修正功率比例，补充 SD 电流、PZT 偏移量；移除不支持的模块与通道功能。</div>
+</section>
+<section class="divider">
+<div class="section-head"><h2><span class="num">02</span>DMA 采集卡：三通道接入</h2><span class="verified">通信链路测试通过</span></div>
+<p class="route">Linux 字符设备读取　→　UDP 转发　→　Windows 网口接收</p>
+<svg class="diagram" viewBox="0 0 670 215" role="img" aria-label="当前联测的CDL5采集卡有三个ADC通道，各自输出功率谱，分别显示与保存。">
+<defs><marker id="arr2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6Z" fill="#087783"/></marker></defs>
+<rect class="tint" x="1" y="58" width="186" height="100" rx="7"/><text class="label" x="94" y="100" text-anchor="middle">CDL5 采集卡</text><text class="small" x="94" y="126" text-anchor="middle">DMA 采集数据</text>
+<path class="wire" d="M187 108H250M250 39V177M250 39H319M250 108H319M250 177H319"/>
+<path class="wire" d="M308 39H321" marker-end="url(#arr2)"/><path class="wire" d="M308 108H321" marker-end="url(#arr2)"/><path class="wire" d="M308 177H321" marker-end="url(#arr2)"/>
+<g><rect class="box" x="329" y="12" width="340" height="54" rx="5"/><text class="label" x="349" y="46">ADC0</text><text class="small" x="438" y="45">功率谱　→　显示／保存</text></g>
+<g><rect class="box" x="329" y="81" width="340" height="54" rx="5"/><text class="label" x="349" y="115">ADC1</text><text class="small" x="438" y="114">功率谱　→　显示／保存</text></g>
+<g><rect class="box" x="329" y="150" width="340" height="54" rx="5"/><text class="label" x="349" y="184">ADC2</text><text class="small" x="438" y="183">功率谱　→　显示／保存</text></g>
+</svg>
+<p class="brief">已接入非均匀距离门的风速／CNR、风廓线图。</p>
+<p class="brief"><strong>版本适配：</strong>4／5／10 kHz 共用解析流程，按规格配置；10 kHz 待新逻辑实测。</p>
+</section>
+</div><footer class="foot"><span>激光测风雷达采集软件 · 本周进展</span><span>01 / 02</span></footer></article>
+</div>
+<div class="slide">
+<article class="page" aria-labelledby="bridge-title"><div class="page-content">
+<header>
+<div class="eyebrow"><span>LiDAR_DataACQ · 设备桥接与后续计划</span><time datetime="2026-11-03">2026-11-03</time></div>
+<h1 id="bridge-title">本地设备，统一网口接入</h1>
+<p class="intro">新增 BridgeCore，将串口、字符设备等接入方式映射为 UDP。</p>
+</header>
+<section class="bridge-panel" aria-label="桥接器链路与验证结果">
+<figure class="bridge-figure" style="margin-left:0;margin-right:0">
+<svg class="diagram" viewBox="0 0 670 255" role="img" aria-label="串口设备和DMA字符设备接入ARM Linux，经Handle校验成帧或分块后由桥接器双向转发到上位机。">
+<defs><marker id="arr3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto-start-reverse"><path d="M0 0L6 3L0 6Z" fill="#087783"/></marker></defs>
+<rect class="box" x="1" y="49" width="150" height="62" rx="6"/><text class="label" x="76" y="86" text-anchor="middle">串口设备</text>
+<rect class="box" x="1" y="155" width="150" height="62" rx="6"/><text class="label" x="76" y="191" text-anchor="middle">DMA 字符设备</text>
+<path class="wire" d="M158 80H183V133H211M158 186H183V133"/>
+<rect class="tint" x="218" y="14" width="220" height="228" rx="8"/><text class="label" x="328" y="44" text-anchor="middle">ARM Linux</text>
+<rect class="box" x="235" y="62" width="186" height="66" rx="5"/><text class="label" x="328" y="90" text-anchor="middle">协议处理</text><text class="small" x="328" y="113" text-anchor="middle">校验成帧／数据分块</text>
+<path class="wire" d="M328 133V153" marker-start="url(#arr3)" marker-end="url(#arr3)"/>
+<rect class="box" x="235" y="159" width="186" height="65" rx="5"/><text class="label" x="328" y="187" text-anchor="middle">桥接器</text><text class="small" x="328" y="210" text-anchor="middle">双向转发</text>
+<path class="wire" d="M444 115H512" marker-end="url(#arr3)"/><text class="small" x="479" y="98" text-anchor="middle">数据上传</text>
+<path class="wire" d="M514 163H447" marker-end="url(#arr3)"/><text class="small" x="479" y="189" text-anchor="middle">命令下发</text>
+<rect class="box" x="520" y="91" width="149" height="98" rx="6"/><text class="label" x="594" y="132" text-anchor="middle">上位机</text><text class="small" x="594" y="157" text-anchor="middle">UDP 网口</text>
+</svg>
+</figure>
+<div class="service-strip"><span>✓ Linux 无界面服务</span><span>✓ 激光器、采集卡链路已通</span><span>✓ 重启后自动恢复</span></div>
+</section>
+<section class="next-panel" aria-labelledby="next-title">
+<h2 class="next-title" id="next-title">下一步计划</h2>
+<section class="plan">
+<div class="plan-head"><h3>01　新增温控设备</h3><span class="progress">正在联测</span></div>
+<div class="steps" role="img" aria-label="温控设备正在进行链路和功能测试，随后完善控制和监测界面。"><div class="step active">链路与功能测试<small>核对控制命令、状态回报</small></div><span class="step-arrow" aria-hidden="true">→</span><div class="step">上位机集成<small>完善控制与监测界面</small></div></div>
+</section>
+<section class="plan">
+<h3>02　将采集卡差异整理为族级规范</h3>
+<svg class="diagram" viewBox="0 0 670 167" role="img" aria-label="统一多通道、非均匀距离门和数据保存格式为采集卡族级规范，各型号只提供差异参数。">
+<defs><marker id="arr4" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6Z" fill="#087783"/></marker></defs>
+<rect class="box" x="1" y="8" width="204" height="50" rx="5"/><text class="label" x="103" y="39" text-anchor="middle">多通道</text>
+<rect class="box" x="233" y="8" width="204" height="50" rx="5"/><text class="label" x="335" y="39" text-anchor="middle">非均匀距离门</text>
+<rect class="box" x="465" y="8" width="204" height="50" rx="5"/><text class="label" x="567" y="39" text-anchor="middle">数据保存格式</text>
+<path class="light-wire" d="M103 58V82H567V58M335 58V82"/><path class="wire" d="M335 82V103" marker-end="url(#arr4)"/>
+<rect class="tint" x="139" y="111" width="392" height="50" rx="5"/><text class="label" x="335" y="143" text-anchor="middle">公共规范 + 各型号差异参数</text>
+</svg>
+<p class="plan-note">新增型号复用处理、显示与保存流程。</p>
+</section>
+</section>
+</div><footer class="foot"><span>激光测风雷达采集软件 · 本周进展</span><span>02 / 02</span></footer></article>
+</div>
+</main>
+</body>
+</html>
