@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="采集软件周报：CDL5 支持 6 m、15 m、30 m 三种距离分辨率并完成开光测试，采集卡处理与数据保存统一，下一步接入 USB 视频设备。">
+<title>采集软件周报 2026-11-10</title>
+<style>
+:root{--bg:#edf1f0;--ink:#203337;--muted:#687a7d;--accent:#087783;--soft:#edf6f6;--line:#d3e1e1;--sans:"Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif;--serif:"Noto Serif SC","Source Han Serif SC","SimSun",serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--sans)}
+.toolbar{width:min(1440px,calc(100% - 40px));height:60px;margin:auto;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}.toolbar a{color:var(--accent)}.toolbar button{border:1px solid var(--line);background:#fff;border-radius:4px;padding:7px 12px;font:inherit;cursor:pointer}
+.slide{width:min(calc(100vw - 40px),calc((100dvh - 88px)*16/9),1920px);margin:0 auto 28px;container-type:inline-size}
+.page{width:100%;height:56.25cqw;padding:2.5cqw 3.35cqw 1.8cqw;background:#fff;display:flex;flex-direction:column;box-shadow:0 4px 24px #2033370b;font-size:1.3cqw}
+.page-content{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr;gap:2.25cqw 3cqw}.page-content>header{grid-column:1/-1}.page-content>section{min-width:0}
+.eyebrow{display:flex;justify-content:space-between;border-top:.2cqw solid var(--accent);padding-top:.7cqw;font-size:.88cqw;letter-spacing:.04em;color:var(--muted)}
+h1{font:700 2.7cqw/1.3 var(--serif);margin:.9cqw 0 .55cqw}h2{font:700 1.8cqw/1.4 var(--serif);margin:0}h3{font-size:1.4cqw;line-height:1.5;margin:0 0 .55cqw}p{margin:0}.intro{font-size:1.3cqw;color:var(--muted)}
+.section-head{display:flex;align-items:flex-start;flex-direction:column;gap:.5cqw;margin-bottom:.6cqw}.num{font:500 1.1cqw var(--sans);color:var(--accent);margin-right:.8cqw}.verified{font-size:1.05cqw;color:var(--accent);white-space:nowrap}.verified::before{content:"✓";margin-right:.4cqw;font-weight:700}
+.diagram{display:block;width:100%;height:auto;overflow:visible}.diagram text{font-family:var(--sans);fill:var(--ink)}.diagram .label{font-size:20px;font-weight:600}.diagram .small{font-size:16px;fill:var(--muted)}.diagram .box{fill:#fff;stroke:var(--line);stroke-width:1.5}.diagram .tint{fill:var(--soft);stroke:#accfd2;stroke-width:1.5}.diagram .wire{fill:none;stroke:var(--accent);stroke-width:2}.diagram .light-wire{fill:none;stroke:#a7c3c6;stroke-width:1.5}
+.figure{margin:1.2cqw 0 0}.result{margin-top:1.2cqw;padding:.6cqw 1cqw;background:var(--soft);font-size:1.12cqw;line-height:1.7}.result strong{color:var(--accent)}
+.divider,.next-panel{border-left:1px solid var(--line);padding-left:2.6cqw}.brief{font-size:1.2cqw;margin-top:1.1cqw}.brief strong{color:var(--accent)}
+.foot{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:.65cqw;margin-top:1.1cqw;font-size:.85cqw;color:var(--muted);flex-shrink:0}
+.next-title{margin:0 0 1.4cqw}.plan{margin:0 0 1.8cqw}.plan-head{display:flex;align-items:baseline;gap:.8cqw}.progress{font-size:1.05cqw;color:var(--accent)}.steps{display:flex;align-items:center;gap:1cqw;margin:.6cqw 0 0}.step{flex:1;border-bottom:.2cqw solid var(--line);padding:.5cqw 0 .8cqw;font-size:1.15cqw}.step.active{border-color:var(--accent)}.step small{display:block;font-size:1cqw;color:var(--muted);margin-top:.3cqw}.step-arrow{font-size:1.7cqw;color:var(--accent)}.plan-note{font-size:1.05cqw;color:var(--muted);margin-top:.9cqw}
+@page{size:15in 8.4375in;margin:0}
+@media print{html,body{margin:0;padding:0;background:white;-webkit-print-color-adjust:exact;print-color-adjust:exact}.toolbar{display:none}.slide{width:15in;margin:0;break-after:page;break-inside:avoid}.slide:last-child{break-after:auto}.page{box-shadow:none}}
+</style>
+</head>
+<body>
+<nav class="toolbar" aria-label="周报工具"><span>采集软件周报 · 16:9 横屏 · 2 页</span><span><a href="weekly-2026-11-03.html">上期周报</a>　<button type="button" onclick="window.print()">打印 / 保存为 PDF</button></span></nav>
+<main>
+<div class="slide">
+<article class="page" aria-labelledby="report-title"><div class="page-content">
+<header>
+<div class="eyebrow"><span>LiDAR_DataACQ · 本周进展</span><time datetime="2026-11-10">2026-11-04 — 11-10</time></div>
+<h1 id="report-title">三种距离分辨率，统一计算流程</h1>
+<p class="intro">CDL5 采集卡按要求同时输出 6 m、15 m、30 m 三种分辨率；各型号采集卡的风速计算改为同一套流程。</p>
+</header>
+<section>
+<div class="section-head"><h2><span class="num">01</span>CDL5：一路回波，三种分辨率</h2><span class="verified">开光测试已完成</span></div>
+<figure class="figure" style="margin-left:0;margin-right:0">
+<svg class="diagram" viewBox="0 0 670 250" role="img" aria-label="同一路回波分为6米、15米、30米三种距离分辨率，每种各240个距离门，分别显示功率谱、径向风和风廓线。">
+<defs><marker id="arr1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6Z" fill="#087783"/></marker></defs>
+<rect class="tint" x="1" y="88" width="150" height="74" rx="6"/><text class="label" x="76" y="122" text-anchor="middle">同一路回波</text><text class="small" x="76" y="146" text-anchor="middle">10 kHz</text>
+<path class="wire" d="M151 125H213" marker-end="url(#arr1)"/><path class="wire" d="M185 125V40H213" marker-end="url(#arr1)"/><path class="wire" d="M185 125V210H213" marker-end="url(#arr1)"/>
+<rect class="box" x="220" y="10" width="200" height="60" rx="5"/><text class="label" x="320" y="38" text-anchor="middle">6 m 分辨率</text><text class="small" x="320" y="60" text-anchor="middle">看近处细节 · 约 1.4 km</text>
+<rect class="box" x="220" y="95" width="200" height="60" rx="5"/><text class="label" x="320" y="123" text-anchor="middle">15 m 分辨率</text><text class="small" x="320" y="145" text-anchor="middle">兼顾 · 约 3.6 km</text>
+<rect class="box" x="220" y="180" width="200" height="60" rx="5"/><text class="label" x="320" y="208" text-anchor="middle">30 m 分辨率</text><text class="small" x="320" y="230" text-anchor="middle">看得更远 · 约 7.2 km</text>
+<path class="light-wire" d="M420 40H450V210H420M420 125H450"/><path class="wire" d="M450 125H478" marker-end="url(#arr1)"/>
+<rect class="tint" x="485" y="70" width="184" height="110" rx="6"/><text class="label" x="577" y="104" text-anchor="middle">每种各三张图</text><text class="small" x="577" y="130" text-anchor="middle">功率谱 · 径向风</text><text class="small" x="577" y="152" text-anchor="middle">风廓线</text>
+</svg>
+</figure>
+<p class="result"><strong>开光测试：</strong>三种分辨率同时出谱，九张图分别显示、分别保存，互不影响。</p>
+</section>
+<section class="divider">
+<div class="section-head"><h2><span class="num">02</span>采集卡：风速计算走同一套流程</h2><span class="verified">四种采集卡已统一</span></div>
+<figure class="figure" style="margin-left:0;margin-right:0">
+<svg class="diagram" viewBox="0 0 670 250" role="img" aria-label="四种采集卡只提供各自参数，径向风速、信噪比和风廓线反演由公共流程完成，再统一显示和保存。">
+<defs><marker id="arr2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6Z" fill="#087783"/></marker></defs>
+<rect class="box" x="1" y="4" width="152" height="46" rx="5"/><text class="label" x="77" y="34" text-anchor="middle">国实 CDL5</text>
+<rect class="box" x="173" y="4" width="152" height="46" rx="5"/><text class="label" x="249" y="34" text-anchor="middle">国实双光子</text>
+<rect class="box" x="345" y="4" width="152" height="46" rx="5"/><text class="label" x="421" y="34" text-anchor="middle">国耀</text>
+<rect class="box" x="517" y="4" width="152" height="46" rx="5"/><text class="label" x="593" y="34" text-anchor="middle">仿真卡</text>
+<path class="light-wire" d="M77 50V66H593V50M249 50V66M421 50V66"/><path class="wire" d="M335 66V80" marker-end="url(#arr2)"/>
+<rect class="box" x="85" y="86" width="500" height="44" rx="5"/><text class="small" x="335" y="114" text-anchor="middle">只提供参数：通道、距离门宽、频率间隔、激光波长</text>
+<path class="wire" d="M335 130V146" marker-end="url(#arr2)"/>
+<rect class="tint" x="85" y="152" width="500" height="50" rx="5"/><text class="label" x="335" y="184" text-anchor="middle">公共流程：径向风速与信噪比 → 风廓线反演</text>
+<path class="wire" d="M335 202V218" marker-end="url(#arr2)"/>
+<text class="small" x="335" y="242" text-anchor="middle">统一显示 · 统一保存</text>
+</svg>
+</figure>
+<p class="result"><strong>效果：</strong>各型号计算口径一致；新型号只需提供参数，即可复用计算、显示与保存。</p>
+</section>
+</div><footer class="foot"><span>激光测风雷达采集软件 · 本周进展</span><span>01 / 02</span></footer></article>
+</div>
+<div class="slide">
+<article class="page" aria-labelledby="save-title"><div class="page-content">
+<header>
+<div class="eyebrow"><span>LiDAR_DataACQ · 数据保存与后续计划</span><time datetime="2026-11-10">2026-11-10</time></div>
+<h1 id="save-title">所有采集卡，同一种数据格式</h1>
+<p class="intro">原来各型号文件格式不同；现在统一为一种格式，后续分析程序只需读一种文件。</p>
+</header>
+<section>
+<div class="section-head"><h2><span class="num">03</span>数据保存：统一格式</h2><span class="verified">四种采集卡已统一</span></div>
+<figure class="figure" style="margin-left:0;margin-right:0">
+<svg class="diagram" viewBox="0 0 670 270" role="img" aria-label="每次采集保存一个文件，包含采集信息和各通道的功率谱、径向风速、信噪比；四束完成后另存一个风廓线文件，都在同一会话目录下。">
+<rect class="tint" x="1" y="4" width="668" height="262" rx="8"/><text class="label" x="335" y="36" text-anchor="middle">同一次采集任务 · 同一目录</text>
+<rect class="box" x="22" y="54" width="300" height="196" rx="6"/><text class="label" x="172" y="84" text-anchor="middle">每次采集一个文件</text>
+<text class="small" x="172" y="114" text-anchor="middle">采集信息：时间、指向、累积时间</text>
+<path class="light-wire" d="M44 128H300"/>
+<text class="small" x="172" y="156" text-anchor="middle">各通道：功率谱</text>
+<text class="small" x="172" y="182" text-anchor="middle">径向风速 · 信噪比</text>
+<text class="small" x="172" y="208" text-anchor="middle">距离、频率的起点与间隔</text>
+<rect class="box" x="348" y="54" width="300" height="196" rx="6"/><text class="label" x="498" y="84" text-anchor="middle">风廓线文件</text>
+<text class="small" x="498" y="114" text-anchor="middle">四个方向测完后生成</text>
+<path class="light-wire" d="M370 128H626"/>
+<text class="small" x="498" y="156" text-anchor="middle">各通道：高度</text>
+<text class="small" x="498" y="182" text-anchor="middle">水平风向 · 水平风速</text>
+<text class="small" x="498" y="208" text-anchor="middle">垂直风速</text>
+</svg>
+</figure>
+<p class="brief"><strong>便于分析：</strong>多分辨率的三个通道写在同一个文件里，按名称区分；缺测值明确标注，不与零值混淆。</p>
+</section>
+<section class="next-panel" aria-labelledby="next-title">
+<h2 class="next-title" id="next-title">下一步计划</h2>
+<section class="plan">
+<div class="plan-head"><h3>01　新增 USB 视频设备</h3><span class="progress">准备接入</span></div>
+<div class="steps" role="img" aria-label="先完成USB视频设备接入与画面读取，再集成到上位机进行显示与保存。"><div class="step active">设备接入<small>识别设备、读取画面</small></div><span class="step-arrow" aria-hidden="true">→</span><div class="step">上位机集成<small>画面显示与保存</small></div></div>
+<p class="plan-note">与激光器、温控、转台、采集卡一样，作为独立设备页面接入。</p>
+</section>
+</section>
+</div><footer class="foot"><span>激光测风雷达采集软件 · 本周进展</span><span>02 / 02</span></footer></article>
+</div>
+</main>
+</body>
+</html>
