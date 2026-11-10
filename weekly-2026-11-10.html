@@ -20,6 +20,7 @@ h1{font:700 2.7cqw/1.3 var(--serif);margin:.9cqw 0 .55cqw}h2{font:700 1.8cqw/1.4
 .divider,.next-panel{border-left:1px solid var(--line);padding-left:2.6cqw}.brief{font-size:1.2cqw;margin-top:1.1cqw}.brief strong{color:var(--accent)}
 .foot{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:.65cqw;margin-top:1.1cqw;font-size:.85cqw;color:var(--muted);flex-shrink:0}
 .next-title{margin:0 0 1.4cqw}.plan{margin:0 0 1.8cqw}.plan-head{display:flex;align-items:baseline;gap:.8cqw}.progress{font-size:1.05cqw;color:var(--accent)}.steps{display:flex;align-items:center;gap:1cqw;margin:.6cqw 0 0}.step{flex:1;border-bottom:.2cqw solid var(--line);padding:.5cqw 0 .8cqw;font-size:1.15cqw}.step.active{border-color:var(--accent)}.step small{display:block;font-size:1cqw;color:var(--muted);margin-top:.3cqw}.step-arrow{font-size:1.7cqw;color:var(--accent)}.plan-note{font-size:1.05cqw;color:var(--muted);margin-top:.9cqw}
+.code{margin:.6cqw 0 0;padding:.8cqw 1.1cqw;background:#f6f9f9;border:1px solid var(--line);border-radius:.3cqw;font:.92cqw/1.5 Consolas,"Cascadia Mono","Courier New",monospace;white-space:pre;overflow:hidden;color:var(--ink)}.code .c{color:var(--muted)}.code .k{color:var(--accent)}.path{font:.95cqw/1.4 Consolas,"Cascadia Mono",monospace;color:var(--muted);margin-top:.3cqw}.notes{font-size:1.02cqw;color:var(--muted);margin-top:.7cqw;line-height:1.6}.right-stack{display:flex;flex-direction:column;gap:1.2cqw}.plan-compact{border-top:1px solid var(--line);padding-top:1cqw}.save-page .section-head{flex-direction:row;align-items:baseline;gap:1.2cqw;margin-bottom:.3cqw}.save-page .page-content{row-gap:1.4cqw}
 @page{size:15in 8.4375in;margin:0}
 @media print{html,body{margin:0;padding:0;background:white;-webkit-print-color-adjust:exact;print-color-adjust:exact}.toolbar{display:none}.slide{width:15in;margin:0;break-after:page;break-inside:avoid}.slide:last-child{break-after:auto}.page{box-shadow:none}}
 </style>
@@ -72,39 +73,51 @@ h1{font:700 2.7cqw/1.3 var(--serif);margin:.9cqw 0 .55cqw}h2{font:700 1.8cqw/1.4
 </div><footer class="foot"><span>激光测风雷达采集软件 · 本周进展</span><span>01 / 02</span></footer></article>
 </div>
 <div class="slide">
-<article class="page" aria-labelledby="save-title"><div class="page-content">
+<article class="page save-page" aria-labelledby="save-title"><div class="page-content">
 <header>
-<div class="eyebrow"><span>LiDAR_DataACQ · 数据保存与后续计划</span><time datetime="2026-11-10">2026-11-10</time></div>
+<div class="eyebrow"><span>LiDAR_DataACQ · 数据保存格式与后续计划</span><time datetime="2026-11-10">2026-11-10</time></div>
 <h1 id="save-title">所有采集卡，同一种数据格式</h1>
-<p class="intro">原来各型号文件格式不同；现在统一为一种格式，后续分析程序只需读一种文件。</p>
+<p class="intro">原来各型号文件格式不同；现在统一为下面两种文件，后续分析程序只需按这一种格式读取。以 CDL5 为例：</p>
 </header>
 <section>
-<div class="section-head"><h2><span class="num">03</span>数据保存：统一格式</h2><span class="verified">四种采集卡已统一</span></div>
-<figure class="figure" style="margin-left:0;margin-right:0">
-<svg class="diagram" viewBox="0 0 670 270" role="img" aria-label="每次采集保存一个文件，包含采集信息和各通道的功率谱、径向风速、信噪比；四束完成后另存一个风廓线文件，都在同一会话目录下。">
-<rect class="tint" x="1" y="4" width="668" height="262" rx="8"/><text class="label" x="335" y="36" text-anchor="middle">同一次采集任务 · 同一目录</text>
-<rect class="box" x="22" y="54" width="300" height="196" rx="6"/><text class="label" x="172" y="84" text-anchor="middle">每次采集一个文件</text>
-<text class="small" x="172" y="114" text-anchor="middle">采集信息：时间、指向、累积时间</text>
-<path class="light-wire" d="M44 128H300"/>
-<text class="small" x="172" y="156" text-anchor="middle">各通道：功率谱</text>
-<text class="small" x="172" y="182" text-anchor="middle">径向风速 · 信噪比</text>
-<text class="small" x="172" y="208" text-anchor="middle">距离、频率的起点与间隔</text>
-<rect class="box" x="348" y="54" width="300" height="196" rx="6"/><text class="label" x="498" y="84" text-anchor="middle">风廓线文件</text>
-<text class="small" x="498" y="114" text-anchor="middle">四个方向测完后生成</text>
-<path class="light-wire" d="M370 128H626"/>
-<text class="small" x="498" y="156" text-anchor="middle">各通道：高度</text>
-<text class="small" x="498" y="182" text-anchor="middle">水平风向 · 水平风速</text>
-<text class="small" x="498" y="208" text-anchor="middle">垂直风速</text>
-</svg>
-</figure>
-<p class="brief"><strong>便于分析：</strong>多分辨率的三个通道写在同一个文件里，按名称区分；缺测值明确标注，不与零值混淆。</p>
+<div class="section-head"><h2><span class="num">03</span>每次采集一个文件</h2><span class="verified">四种采集卡格式相同</span></div>
+<p class="path">保存目录/20261110_153000_Cdl510K/20261110_153012_345.json</p>
+<pre class="code">{
+  <span class="k">"frame"</span>: { <span class="k">"session"</span>: "20261110_153000_Cdl510K",
+             <span class="k">"frameTime"</span>: "2026-11-10 15:30:12.345",
+             <span class="k">"azimuthDeg"</span>: 35, <span class="k">"elevationDeg"</span>: 60,
+             <span class="k">"sync"</span>: false, <span class="k">"accumSec"</span>: 1, <span class="k">"card"</span>: "Cdl510K" },
+  <span class="k">"channels"</span>: [
+    { <span class="k">"name"</span>: "ADC0_6m",
+      <span class="k">"rangeStartM"</span>: 0, <span class="k">"rangeStepM"</span>: 6,
+      <span class="k">"freqStartMHz"</span>: 14.6484, <span class="k">"freqStepMHz"</span>: 0.976562, <span class="k">"zeroWindMHz"</span>: 80,
+      <span class="k">"spectrum"</span>: [[…], …],  <span class="c">// 240 门 × 240 频点</span>
+      <span class="k">"radialWind"</span>: […],     <span class="c">// 240 门，m/s</span>
+      <span class="k">"cnr"</span>: […] },          <span class="c">// 240 门，dB</span>
+    { <span class="k">"name"</span>: "ADC0_15m", … }, { <span class="k">"name"</span>: "ADC0_30m", … }
+  ]
+}</pre>
+<p class="notes">斜距 = 起点 + 门序号 × 门宽；频率 = 起点 + 频点序号 × 间隔。缺测写 null。</p>
 </section>
-<section class="next-panel" aria-labelledby="next-title">
-<h2 class="next-title" id="next-title">下一步计划</h2>
-<section class="plan">
-<div class="plan-head"><h3>01　新增 USB 视频设备</h3><span class="progress">准备接入</span></div>
+<section class="divider right-stack">
+<div>
+<div class="section-head"><h2><span class="num">04</span>四个方向测完，另存风廓线</h2><span class="verified">与采集文件同一目录</span></div>
+<p class="path">保存目录/20261110_153000_Cdl510K/profile_20261110_153112_678.json</p>
+<pre class="code">{
+  <span class="k">"frame"</span>: { <span class="k">"session"</span>: …, <span class="k">"frameTime"</span>: …, <span class="k">"azimuthDeg"</span>: …,
+             <span class="k">"elevationDeg"</span>: …, <span class="k">"sync"</span>: true, <span class="k">"accumSec"</span>: 1 },
+  <span class="k">"channels"</span>: [
+    { <span class="k">"name"</span>: "ADC0_6m", <span class="k">"heightStartM"</span>: 0, <span class="k">"heightStepM"</span>: 5.19615,
+      <span class="k">"horizontalDirectionDeg"</span>: […],  <span class="c">// 来向 0–360°</span>
+      <span class="k">"horizontalSpeed"</span>: […],         <span class="c">// m/s</span>
+      <span class="k">"verticalSpeed"</span>: […] }, …       <span class="c">// m/s，向上为正</span>
+  ]
+}</pre>
+<p class="notes">高度 = 起点 + 层序号 × 层距（门宽 × 仰角正弦）。</p>
+</div>
+<section class="plan-compact" aria-labelledby="next-title">
+<div class="plan-head"><h3 id="next-title">下一步　新增 USB 视频设备</h3><span class="progress">准备接入</span></div>
 <div class="steps" role="img" aria-label="先完成USB视频设备接入与画面读取，再集成到上位机进行显示与保存。"><div class="step active">设备接入<small>识别设备、读取画面</small></div><span class="step-arrow" aria-hidden="true">→</span><div class="step">上位机集成<small>画面显示与保存</small></div></div>
-<p class="plan-note">与激光器、温控、转台、采集卡一样，作为独立设备页面接入。</p>
 </section>
 </section>
 </div><footer class="foot"><span>激光测风雷达采集软件 · 本周进展</span><span>02 / 02</span></footer></article>
