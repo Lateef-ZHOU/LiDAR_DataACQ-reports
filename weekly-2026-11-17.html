@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="采集软件周报：通道规格前移至编译期，四束风廓线共享结果；逐层减少 Qt 类型依赖，同步开展代码审查，为后续界面解耦做准备。">
+<title>采集软件周报 2026-11-17</title>
+<style>
+:root{--bg:#edf1f0;--ink:#203337;--muted:#687a7d;--accent:#087783;--soft:#edf6f6;--line:#d3e1e1;--sans:"Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif;--serif:"Noto Serif SC","Source Han Serif SC","SimSun",serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--sans)}
+.toolbar{width:min(1440px,calc(100% - 40px));height:60px;margin:auto;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px}.toolbar a{color:var(--accent)}.toolbar button{border:1px solid var(--line);background:#fff;border-radius:4px;padding:7px 12px;font:inherit;cursor:pointer}
+.slide{width:min(calc(100vw - 40px),calc((100dvh - 88px)*16/9),1920px);margin:0 auto 28px;container-type:inline-size}
+.page{width:100%;height:56.25cqw;padding:2.5cqw 3.35cqw 1.8cqw;background:#fff;display:flex;flex-direction:column;box-shadow:0 4px 24px #2033370b;font-size:1.3cqw}
+.page-content{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto minmax(0,1fr);gap:1.8cqw 3cqw}.page-content>header{grid-column:1/-1}.page-content>section{min-width:0;min-height:0;display:flex;flex-direction:column}
+.eyebrow{display:flex;justify-content:space-between;border-top:.2cqw solid var(--accent);padding-top:.7cqw;font-size:.88cqw;letter-spacing:.04em;color:var(--muted)}
+h1{font:700 2.7cqw/1.3 var(--serif);margin:.9cqw 0 .55cqw}h2{font:700 1.8cqw/1.4 var(--serif);margin:0}p{margin:0}.intro{font-size:1.3cqw;color:var(--muted)}
+.section-head{display:flex;align-items:flex-start;flex-direction:column;gap:.45cqw;margin-bottom:.8cqw}.num{font:500 1.1cqw var(--sans);color:var(--accent);margin-right:.8cqw}.status{font-size:1.05cqw;color:var(--accent)}.status.done::before{content:"✓";margin-right:.4cqw;font-weight:700}
+.figure{margin:.5cqw 0 0;flex:1;min-height:0;display:flex;align-items:flex-start}.diagram{display:block;width:100%;height:100%;overflow:visible}.diagram text{font-family:var(--sans);fill:var(--ink)}.diagram .label{font-size:23px;font-weight:600}.diagram .small{font-size:19px;fill:var(--muted)}.diagram .tiny{font-size:17px;fill:var(--muted)}.diagram .accent{fill:var(--accent)}.diagram .number{font:600 65px var(--sans);fill:var(--accent)}
+.diagram .box{fill:#fff;stroke:var(--line);stroke-width:1.5}.diagram .tint{fill:var(--soft);stroke:#accfd2;stroke-width:1.5}.diagram .past{fill:#f4f6f6;stroke:var(--line);stroke-width:1.5}.diagram .future{fill:#fff;stroke:#91b7bc;stroke-width:1.8;stroke-dasharray:7 5}.diagram .wire{fill:none;stroke:var(--accent);stroke-width:2}.diagram .light-wire{fill:none;stroke:#a7c3c6;stroke-width:1.6}.diagram .dash{stroke-dasharray:6 5}.diagram .cell{fill:#c4e1e2;stroke:#fff;stroke-width:2}
+.result{margin-top:.9cqw;padding:.65cqw .9cqw;background:var(--soft);font-size:1.12cqw;line-height:1.7}.result strong{color:var(--accent)}.divider{border-left:1px solid var(--line);padding-left:2.6cqw}
+.foot{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:.65cqw;margin-top:1.1cqw;font-size:.85cqw;color:var(--muted);flex-shrink:0}
+@media(max-width:650px){.toolbar{font-size:10px;gap:10px}.toolbar button{padding:5px 7px}}
+@page{size:15in 8.4375in;margin:0}
+@media print{html,body{margin:0;padding:0;background:white;-webkit-print-color-adjust:exact;print-color-adjust:exact}.toolbar{display:none}.slide{width:15in;margin:0;break-after:page;break-inside:avoid}.slide:last-child{break-after:auto}.page{box-shadow:none}}
+</style>
+</head>
+<body>
+<nav class="toolbar" aria-label="周报工具"><span>采集软件周报 · 16:9 横屏 · 2 页</span><span><a href="weekly-2026-11-10.html">上期周报</a>　<button type="button" onclick="window.print()">打印 / 保存为 PDF</button></span></nav>
+<main>
+<div class="slide">
+<article class="page" aria-labelledby="report-title"><div class="page-content">
+<header>
+<div class="eyebrow"><span>LiDAR_DataACQ · 本周进展</span><time datetime="2026-11-17">2026-11-11 — 11-17</time></div>
+<h1 id="report-title">采集规格前移，数据少搬运</h1>
+<p class="intro">延续上周统一计算流程：固定规格交给编译器，减少跨次采集的重复处理。</p>
+</header>
+<section>
+<div class="section-head"><h2><span class="num">01</span>通道规格由编译期确定</h2><span class="status done">可变模板参数已接通</span></div>
+<figure class="figure">
+<svg class="diagram" viewBox="0 0 640 440" role="img" aria-label="原先通用通道数组在运行时核对规格；现在用可变模板参数固定通道组合，通道规格随功率谱、径向风和风廓线一直保留。以 CDL5 的六米、十五米、三十米通道为例。">
+<defs><marker id="a1" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7Z" fill="#087783"/></marker></defs>
+<text class="small" x="3" y="25">原结构</text>
+<rect class="past" x="0" y="42" width="256" height="68" rx="6"/><text class="label" x="128" y="84" text-anchor="middle">通用通道数组</text>
+<path class="light-wire" d="M256 76H340"/><path d="M334 71L341 76L334 81" fill="none" stroke="#a7c3c6" stroke-width="1.6"/>
+<rect class="past" x="348" y="42" width="290" height="68" rx="6"/><text class="label" x="493" y="84" text-anchor="middle">运行时核对规格</text>
+<path class="wire" d="M320 126V167" marker-end="url(#a1)"/><text class="small accent" x="344" y="152">可变模板参数</text>
+<rect class="tint" x="0" y="188" width="638" height="169" rx="7"/>
+<text class="label accent" x="23" y="222">现结构 · 通道组合固定</text><text class="tiny" x="614" y="220" text-anchor="end">CDL5 示例</text>
+<rect class="box" x="18" y="244" width="190" height="92" rx="5"/><text class="label" x="113" y="279" text-anchor="middle">6 m 通道</text><text class="small" x="113" y="309" text-anchor="middle">规格 + 定长数据</text>
+<rect class="box" x="224" y="244" width="190" height="92" rx="5"/><text class="label" x="319" y="279" text-anchor="middle">15 m 通道</text><text class="small" x="319" y="309" text-anchor="middle">规格 + 定长数据</text>
+<rect class="box" x="430" y="244" width="190" height="92" rx="5"/><text class="label" x="525" y="279" text-anchor="middle">30 m 通道</text><text class="small" x="525" y="309" text-anchor="middle">规格 + 定长数据</text>
+<path class="wire" d="M320 357V385" marker-end="url(#a1)"/>
+<text class="label" x="320" y="422" text-anchor="middle">功率谱 → 径向风 / CNR → 风廓线</text>
+</svg>
+</figure>
+<p class="result">固定规格成为<strong>类型约束</strong>，跨次采集无需重复核对。</p>
+</section>
+<section class="divider">
+<div class="section-head"><h2><span class="num">02</span>四束历史，共享结果</h2><span class="status done">算法与保存格式保持</span></div>
+<figure class="figure">
+<svg class="diagram" viewBox="0 0 640 440" role="img" aria-label="最近四束径向风进入原有风廓线反演，直接形成最终结果数组；绘图与保存共享同一份只读结果，减少中间包装和大数组搬运。">
+<defs><marker id="a2" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7Z" fill="#087783"/></marker></defs>
+<text class="small" x="3" y="25">最近四束径向风</text>
+<rect class="box" x="1" y="42" width="143" height="58" rx="5"/><text class="label" x="72" y="79" text-anchor="middle">第 1 束</text>
+<rect class="box" x="166" y="42" width="143" height="58" rx="5"/><text class="label" x="237" y="79" text-anchor="middle">第 2 束</text>
+<rect class="box" x="331" y="42" width="143" height="58" rx="5"/><text class="label" x="402" y="79" text-anchor="middle">第 3 束</text>
+<rect class="box" x="496" y="42" width="143" height="58" rx="5"/><text class="label" x="567" y="79" text-anchor="middle">第 4 束</text>
+<path class="light-wire" d="M72 100V121H567V100M237 100V121M402 100V121"/><path class="wire" d="M320 121V145" marker-end="url(#a2)"/>
+<rect class="box" x="143" y="153" width="354" height="54" rx="5"/><text class="label" x="320" y="188" text-anchor="middle">风廓线反演</text>
+<path class="wire" d="M320 207V230" marker-end="url(#a2)"/>
+<rect class="tint" x="75" y="238" width="490" height="100" rx="7"/><text class="label accent" x="320" y="271" text-anchor="middle">直接填写最终数组</text>
+<g transform="translate(111 289)"><rect class="cell" width="52" height="26"/><rect class="cell" x="52" width="52" height="26"/><rect class="cell" x="104" width="52" height="26"/><rect class="cell" x="156" width="52" height="26"/><rect class="cell" x="208" width="52" height="26"/><rect class="cell" x="260" width="52" height="26"/><rect class="cell" x="312" width="52" height="26"/><rect class="cell" x="364" width="52" height="26"/></g>
+<path class="wire" d="M211 338V378H153V388" marker-end="url(#a2)"/><path class="wire" d="M429 338V378H487V388" marker-end="url(#a2)"/>
+<text class="small accent" x="320" y="368" text-anchor="middle">只读共享</text>
+<rect class="box" x="67" y="397" width="172" height="42" rx="5"/><text class="label" x="153" y="425" text-anchor="middle">绘图</text>
+<rect class="box" x="401" y="397" width="172" height="42" rx="5"/><text class="label" x="487" y="425" text-anchor="middle">保存</text>
+</svg>
+</figure>
+<p class="result">减少中间包装与大数组搬运，<strong>共享同一份结果</strong>。</p>
+</section>
+</div><footer class="foot"><span>激光测风雷达采集软件 · 本周进展</span><span>01 / 02</span></footer></article>
+</div>
+<div class="slide">
+<article class="page" aria-labelledby="decouple-title"><div class="page-content">
+<header>
+<div class="eyebrow"><span>LiDAR_DataACQ · 依赖整理与后续方向</span><time datetime="2026-11-17">2026-11-17</time></div>
+<h1 id="decouple-title">减少 Qt 依赖，为界面解耦做准备</h1>
+<p class="intro">界面与操作流程基本不变；底层类型迁移与逐层审查同步推进。</p>
+</header>
+<section>
+<div class="section-head"><h2><span class="num">03</span>标准类型逐层接入</h2><span class="status">正在推进 · WebUI 为后续方向</span></div>
+<figure class="figure">
+<svg class="diagram" viewBox="0 0 640 440" role="img" aria-label="算法、通信和设备层逐步采用标准字符串、数组和字节视图，收拢 Qt 数据转换。当前仍使用 Qt 界面和信号槽、线程及事件循环；WebUI 是后续解耦方向。">
+<defs><marker id="a3" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7Z" fill="#087783"/></marker></defs>
+<rect class="box" x="0" y="12" width="276" height="67" rx="6"/><text class="label" x="138" y="54" text-anchor="middle">现有 Qt UI</text>
+<rect class="future" x="364" y="12" width="274" height="67" rx="6"/><text class="label" x="501" y="54" text-anchor="middle">WebUI（后续）</text>
+<path class="wire" d="M138 151V89" marker-end="url(#a3)"/><path class="wire dash" d="M501 151V89" marker-end="url(#a3)"/>
+<rect class="box" x="0" y="152" width="638" height="59" rx="6"/><text class="label" x="319" y="189" text-anchor="middle">逐步收拢 Qt 数据转换</text>
+<path class="wire" d="M320 248V221" marker-end="url(#a3)"/>
+<rect class="tint" x="0" y="248" width="638" height="128" rx="7"/><text class="label accent" x="319" y="281" text-anchor="middle">设备 · 通信 · 算法</text>
+<rect class="box" x="19" y="303" width="188" height="52" rx="5"/><text class="label" x="113" y="337" text-anchor="middle">std::string</text>
+<rect class="box" x="225" y="303" width="188" height="52" rx="5"/><text class="label" x="319" y="337" text-anchor="middle">vector / array</text>
+<rect class="box" x="431" y="303" width="188" height="52" rx="5"/><text class="label" x="525" y="337" text-anchor="middle">span</text>
+<text class="small" x="319" y="423" text-anchor="middle">仍保留 Qt 对象、线程、信号槽与事件循环</text>
+</svg>
+</figure>
+<p class="result">已迁移日志、设备信息及收发接口；<strong>继续整理设备层</strong>。</p>
+</section>
+<section class="divider">
+<div class="section-head"><h2><span class="num">04</span>逐层审查，逐项验证</h2><span class="status done">最新一轮回归通过</span></div>
+<figure class="figure">
+<svg class="diagram" viewBox="0 0 640 440" role="img" aria-label="代码审查关注重复状态、多余转发和资源寿命，经过整理后回归验证。最新一轮四十项测试全部通过，构建和启动冒烟通过；后续继续设备层接口与界面边界整理。">
+<defs><marker id="a4" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7Z" fill="#087783"/></marker></defs>
+<rect class="box" x="0" y="12" width="174" height="55" rx="5"/><text class="label" x="87" y="48" text-anchor="middle">审查</text>
+<path class="wire" d="M174 40H224" marker-end="url(#a4)"/>
+<rect class="box" x="233" y="12" width="174" height="55" rx="5"/><text class="label" x="320" y="48" text-anchor="middle">整理</text>
+<path class="wire" d="M407 40H457" marker-end="url(#a4)"/>
+<rect class="tint" x="466" y="12" width="172" height="55" rx="5"/><text class="label accent" x="552" y="48" text-anchor="middle">验证</text>
+<text class="small" x="87" y="102" text-anchor="middle">重复状态</text><text class="small" x="320" y="102" text-anchor="middle">多余转发</text><text class="small" x="552" y="102" text-anchor="middle">资源寿命</text>
+<rect class="tint" x="0" y="135" width="638" height="181" rx="7"/>
+<text class="number" x="319" y="215" text-anchor="middle">40 / 40</text><text class="label" x="319" y="251" text-anchor="middle">最新一轮测试通过</text>
+<path class="light-wire" d="M112 270H526"/><text class="small accent" x="319" y="300" text-anchor="middle">构建通过 · 启动冒烟通过</text>
+<text class="small" x="3" y="361">下一步</text>
+<rect class="box" x="0" y="380" width="274" height="59" rx="5"/><text class="label" x="137" y="417" text-anchor="middle">设备层接口</text>
+<path class="wire" d="M274 409H355" marker-end="url(#a4)"/>
+<rect class="box" x="364" y="380" width="274" height="59" rx="5"/><text class="label" x="501" y="417" text-anchor="middle">界面边界</text>
+</svg>
+</figure>
+<p class="result">重点核对<strong>采集、重试、取消、重连与关闭</strong>。</p>
+</section>
+</div><footer class="foot"><span>激光测风雷达采集软件 · 本周进展</span><span>02 / 02</span></footer></article>
+</div>
+</main>
+</body>
+</html>
