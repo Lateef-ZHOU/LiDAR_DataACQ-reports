@@ -15,7 +15,7 @@
 .eyebrow{display:flex;justify-content:space-between;border-top:.2cqw solid var(--accent);padding-top:.7cqw;font-size:.88cqw;letter-spacing:.04em;color:var(--muted)}
 h1{font:700 2.7cqw/1.3 var(--serif);margin:.9cqw 0 .55cqw}h2{font:700 1.8cqw/1.4 var(--serif);margin:0}p{margin:0}.intro{font-size:1.3cqw;color:var(--muted)}
 .section-head{display:flex;align-items:flex-start;flex-direction:column;gap:.45cqw;margin-bottom:.8cqw}.num{font:500 1.1cqw var(--sans);color:var(--accent);margin-right:.8cqw}.status{font-size:1.05cqw;color:var(--accent)}.status.done::before{content:"✓";margin-right:.4cqw;font-weight:700}
-.figure{margin:.5cqw 0 0;flex:1;min-height:0;display:flex;align-items:flex-start}.diagram{display:block;width:100%;height:100%;overflow:visible}.diagram text{font-family:var(--sans);fill:var(--ink)}.diagram .label{font-size:23px;font-weight:600}.diagram .small{font-size:19px;fill:var(--muted)}.diagram .tiny{font-size:17px;fill:var(--muted)}.diagram .accent{fill:var(--accent)}.diagram .number{font:600 65px var(--sans);fill:var(--accent)}
+.figure{margin:.5cqw 0 0;flex:1;min-height:0;display:flex;align-items:flex-start}.diagram{display:block;width:100%;height:100%;overflow:visible}.diagram text{font-family:var(--sans);fill:var(--ink)}.diagram .label{font-size:23px;font-weight:600}.diagram .small{font-size:19px;fill:var(--muted)}.diagram .tiny{font-size:17px;fill:var(--muted)}.diagram .accent{fill:var(--accent)}
 .diagram .box{fill:#fff;stroke:var(--line);stroke-width:1.5}.diagram .tint{fill:var(--soft);stroke:#accfd2;stroke-width:1.5}.diagram .past{fill:#f4f6f6;stroke:var(--line);stroke-width:1.5}.diagram .future{fill:#fff;stroke:#91b7bc;stroke-width:1.8;stroke-dasharray:7 5}.diagram .wire{fill:none;stroke:var(--accent);stroke-width:2}.diagram .light-wire{fill:none;stroke:#a7c3c6;stroke-width:1.6}.diagram .dash{stroke-dasharray:6 5}.diagram .cell{fill:#c4e1e2;stroke:#fff;stroke-width:2}
 .result{margin-top:.9cqw;padding:.65cqw .9cqw;background:var(--soft);font-size:1.12cqw;line-height:1.7}.result strong{color:var(--accent)}.divider{border-left:1px solid var(--line);padding-left:2.6cqw}
 .foot{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:.65cqw;margin-top:1.1cqw;font-size:.85cqw;color:var(--muted);flex-shrink:0}
@@ -107,23 +107,21 @@ h1{font:700 2.7cqw/1.3 var(--serif);margin:.9cqw 0 .55cqw}h2{font:700 1.8cqw/1.4
 <p class="result">已迁移日志、设备信息及收发接口；<strong>继续整理设备层</strong>。</p>
 </section>
 <section class="divider">
-<div class="section-head"><h2><span class="num">04</span>逐层审查，逐项验证</h2><span class="status done">最新一轮回归通过</span></div>
+<div class="section-head"><h2><span class="num">04</span>逐层审查，逐项验证</h2></div>
 <figure class="figure">
-<svg class="diagram" viewBox="0 0 640 440" role="img" aria-label="代码审查关注重复状态、多余转发和资源寿命，经过整理后回归验证。最新一轮四十项测试全部通过，构建和启动冒烟通过；后续继续设备层接口与界面边界整理。">
+<svg class="diagram" viewBox="0 0 640 440" role="img" aria-label="代码审查关注重复状态、多余转发和资源寿命，经过整理后回归验证；后续继续设备层接口与界面边界整理。">
 <defs><marker id="a4" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7Z" fill="#087783"/></marker></defs>
-<rect class="box" x="0" y="12" width="174" height="55" rx="5"/><text class="label" x="87" y="48" text-anchor="middle">审查</text>
-<path class="wire" d="M174 40H224" marker-end="url(#a4)"/>
-<rect class="box" x="233" y="12" width="174" height="55" rx="5"/><text class="label" x="320" y="48" text-anchor="middle">整理</text>
-<path class="wire" d="M407 40H457" marker-end="url(#a4)"/>
-<rect class="tint" x="466" y="12" width="172" height="55" rx="5"/><text class="label accent" x="552" y="48" text-anchor="middle">验证</text>
-<text class="small" x="87" y="102" text-anchor="middle">重复状态</text><text class="small" x="320" y="102" text-anchor="middle">多余转发</text><text class="small" x="552" y="102" text-anchor="middle">资源寿命</text>
-<rect class="tint" x="0" y="135" width="638" height="181" rx="7"/>
-<text class="number" x="319" y="215" text-anchor="middle">40 / 40</text><text class="label" x="319" y="251" text-anchor="middle">最新一轮测试通过</text>
-<path class="light-wire" d="M112 270H526"/><text class="small accent" x="319" y="300" text-anchor="middle">构建通过 · 启动冒烟通过</text>
-<text class="small" x="3" y="361">下一步</text>
-<rect class="box" x="0" y="380" width="274" height="59" rx="5"/><text class="label" x="137" y="417" text-anchor="middle">设备层接口</text>
-<path class="wire" d="M274 409H355" marker-end="url(#a4)"/>
-<rect class="box" x="364" y="380" width="274" height="59" rx="5"/><text class="label" x="501" y="417" text-anchor="middle">界面边界</text>
+<rect class="box" x="0" y="55" width="174" height="68" rx="5"/><text class="label" x="87" y="98" text-anchor="middle">审查</text>
+<path class="wire" d="M174 89H224" marker-end="url(#a4)"/>
+<rect class="box" x="233" y="55" width="174" height="68" rx="5"/><text class="label" x="320" y="98" text-anchor="middle">整理</text>
+<path class="wire" d="M407 89H457" marker-end="url(#a4)"/>
+<rect class="tint" x="466" y="55" width="172" height="68" rx="5"/><text class="label accent" x="552" y="98" text-anchor="middle">验证</text>
+<text class="small" x="87" y="161" text-anchor="middle">重复状态</text><text class="small" x="320" y="161" text-anchor="middle">多余转发</text><text class="small" x="552" y="161" text-anchor="middle">资源寿命</text>
+<path class="light-wire" d="M0 220H638"/>
+<text class="small" x="3" y="275">下一步</text>
+<rect class="box" x="0" y="298" width="274" height="68" rx="5"/><text class="label" x="137" y="341" text-anchor="middle">设备层接口</text>
+<path class="wire" d="M274 332H355" marker-end="url(#a4)"/>
+<rect class="box" x="364" y="298" width="274" height="68" rx="5"/><text class="label" x="501" y="341" text-anchor="middle">界面边界</text>
 </svg>
 </figure>
 <p class="result">重点核对<strong>采集、重试、取消、重连与关闭</strong>。</p>
